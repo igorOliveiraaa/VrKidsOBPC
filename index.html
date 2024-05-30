@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Casa VR</title>
+  <title>Histórias da Criação</title>
   <script src="./lib/aframe.min.js"></script>
   <style>
     body { 
@@ -33,24 +33,29 @@
   </a-scene>
   <script>
     let stories = [];
-//
-    fetch('./json/historias.json')
+
+    fetch('./historias.json')
       .then(response => response.json())
       .then(data => {
         stories = data;
-        const storyIndex = getStoryIndexFromUrl();
-        if (storyIndex !== null && storyIndex >= 0 && storyIndex < stories.length) {
-          changeEnvironment(storyIndex);
+        const storyId = getStoryIdFromUrl();
+        if (storyId !== null) {
+          const storyIndex = stories.findIndex(story => story.id === storyId);
+          if (storyIndex !== -1) {
+            changeEnvironment(storyIndex);
+          } else {
+            console.error('Invalid story ID in URL');
+          }
         } else {
-          console.error('Invalid story index in URL');
+          console.error('No story ID in URL');
         }
       })
       .catch(error => console.error('Error loading stories:', error));
 
-    function getStoryIndexFromUrl() {
+    function getStoryIdFromUrl() {
       const urlParams = new URLSearchParams(window.location.search);
       const storyParam = urlParams.get('historia');
-      return storyParam ? parseInt(storyParam) - 1 : null; 
+      return storyParam ? parseInt(storyParam) : null;
     }
 
     function changeEnvironment(index) {
