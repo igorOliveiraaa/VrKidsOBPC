@@ -3,8 +3,8 @@
     "id": 1,
     "title": "Primeiro Dia: A Luz",
     "text": "No começo, Deus criou o céu e a terra. Tudo era escuro, mas Deus disse: 'Que haja luz!' E apareceu a luz, separando o dia da noite.",
-    "image": "../img/dia1.png",
-    "audio": "../audios/dia1.mp3"
+    "image": "/./img/dia1.png",
+    "audio": "/./audios/dia1.mp3"
   },
   {
     "id": 2,
