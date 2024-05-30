@@ -83,7 +83,7 @@
       alt="Narrator"
       onclick="toggleNarration()"
     />
-    <div id="speech-bubble">Clique aqui para eu ler a história</div>
+    <div id="speech-bubble">Clique aqui para começar a história</div>
     <audio id="narration-audio" src="./audios/dia1.mp3" controls style="display: none"></audio>
 
     <script>
@@ -95,15 +95,15 @@
         if (isNarrating) {
           narrationAudio.pause();
           narrationAudio.currentTime = 0;
-          speechBubble.innerText = "Clique aqui para eu ler a história";
+          speechBubble.innerText = "Clique aqui para começar a história";
           isNarrating = false;
         } else {
           narrationAudio.play();
-          speechBubble.innerText = "A história está sendo narrada";
+          speechBubble.innerText = "A história começou...";
           isNarrating = true;
 
           narrationAudio.onended = () => {
-            speechBubble.innerText = "Clique aqui para eu ler a história";
+            speechBubble.innerText = "Clique aqui para começar a história";
             isNarrating = false;
           };
         }
