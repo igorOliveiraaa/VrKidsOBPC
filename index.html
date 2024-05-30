@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casa VR</title>
+  <script src="./lib/aframe.min.js"></script>
+  <style>
+    body { 
+      margin: 0; 
+      font-family: Arial, sans-serif; 
+    }
+    .fade {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      opacity: 0;
+      transition: opacity 1s;
+      pointer-events: none;
+      z-index: 10000;
+    }
+  </style>
+</head>
+<body>
+  <div id="fade" class="fade"></div>
+  <a-scene>
+    <a-assets id="assets"></a-assets>
+    <a-sky id="sky" rotation="0 -130 0"></a-sky>
+    <a-camera look-controls="reverseTouchDrag: true"></a-camera>
+  </a-scene>
+  <script>
+    let stories = [];
+
+    fetch('./json/historias.json')
+      .then(response => response.json())
+      .then(data => {
+        stories = data;
+        const storyIndex = getStoryIndexFromUrl();
+        if (storyIndex !== null && storyIndex >= 0 && storyIndex < stories.length) {
+          changeEnvironment(storyIndex);
+        } else {
+          console.error('Invalid story index in URL');
+        }
+      })
+      .catch(error => console.error('Error loading stories:', error));
+
+    function getStoryIndexFromUrl() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const storyParam = urlParams.get('historia');
+      return storyParam ? parseInt(storyParam) - 1 : null; 
+    }
+
+    function changeEnvironment(index) {
+      const sky = document.getElementById('sky');
+      const fade = document.getElementById('fade');
+      const story = stories[index];
+
+      if (story) {
+        fade.style.opacity = 1;
+        setTimeout(() => {
+          sky.setAttribute('src', story.image);
+          narrateStory(story.text);
+          fade.style.opacity = 0;
+        }, 1000);
+      } else {
+        console.error('Story not found for index:', index);
+      }
+    }
+
+    function narrateStory(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>
