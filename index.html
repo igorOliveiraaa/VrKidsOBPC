@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Histórias da Criação</title>
+  <title>Histórias da Biblia OBPC</title>
   <script src="./lib/aframe.min.js"></script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+    
     body { 
       margin: 0; 
       font-family: Arial, sans-serif; 
@@ -22,6 +24,48 @@
       pointer-events: none;
       z-index: 10000;
     }
+    #narrator {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 150px;
+      height: auto;
+      cursor: pointer;
+      z-index: 10001;
+      transition: transform 0.3s;
+    }
+    @media (max-width: 600px) {
+      #narrator {
+        width: 120px;
+      }
+    }
+    #speech-bubble {
+  position: fixed;
+  bottom: 180px;
+  left: 20px;
+  width: 200px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 10002;
+  display: block;
+  font-family: 'Comic Neue', cursive;
+  text-align: center; 
+}
+
+#speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%); 
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 20px solid #fff;
+}
   </style>
 </head>
 <body>
@@ -31,8 +75,15 @@
     <a-sky id="sky" rotation="0 -130 0"></a-sky>
     <a-camera look-controls="reverseTouchDrag: true"></a-camera>
   </a-scene>
+  
+  <img id="narrator" src="./img/narrador/narrador.png" alt="Narrator" onclick="toggleNarration()" />
+  <div id="speech-bubble">Clique aqui para eu ler a história</div>
+  <audio id="narration-audio" controls style="display: none;"></audio>
+
   <script>
     let stories = [];
+    let currentAudio = null;
+    let isNarrating = false;
 
     fetch('./historias.json')
       .then(response => response.json())
@@ -67,7 +118,7 @@
         fade.style.opacity = 1;
         setTimeout(() => {
           sky.setAttribute('src', story.image);
-          narrateStory(story.text);
+          currentStoryText = story.text;
           fade.style.opacity = 0;
         }, 1000);
       } else {
@@ -75,9 +126,39 @@
       }
     }
 
-    function narrateStory(text) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      window.speechSynthesis.speak(utterance);
+    let currentStoryText = '';
+
+    function toggleNarration() {
+      const speechBubble = document.getElementById('speech-bubble');
+      const narrationAudio = document.getElementById('narration-audio');
+      if (isNarrating) {
+        narrationAudio.pause();
+        narrationAudio.currentTime = 0;
+        speechBubble.innerText = 'Clique aqui para eu ler a história';
+        isNarrating = false;
+      } else {
+        const storyId = getStoryIdFromUrl();
+        if (storyId !== null) {
+          const story = stories.find(story => story.id === storyId);
+          if (story && story.audio) {
+            narrationAudio.src = story.audio;
+            narrationAudio.play();
+            speechBubble.innerText = 'A história está sendo narrada';
+            isNarrating = true;
+
+            narrationAudio.onended = () => {
+              speechBubble.innerText = 'Clique aqui para eu ler a história';
+              isNarrating = false;
+            };
+          } else {
+            console.error('No audio available for this story');
+            speechBubble.innerText = 'Erro ao carregar a história.';
+          }
+        } else {
+          console.error('No story ID available for narration');
+          speechBubble.innerText = 'Erro ao carregar a história.';
+        }
+      }
     }
   </script>
 </body>
