@@ -25,17 +25,16 @@
         z-index: 10000;
       }
       #narrator {
-          position: fixed;
-          bottom: 10px;
-          left: 20px;
-          width: 150px;
-          height: auto;
-          cursor: pointer;
-          z-index: 10001;
-          transition: transform 0.3s;
-          -webkit-tap-highlight-color: transparent;
-        }
-  
+        position: fixed;
+        bottom: 10px;
+        left: 20px;
+        width: 150px;
+        height: auto;
+        cursor: pointer;
+        z-index: 10001;
+        transition: transform 0.3s;
+        -webkit-tap-highlight-color: transparent;
+      }
   
       @media (max-width: 600px) {
         #narrator {
@@ -67,6 +66,24 @@
         border-left: 10px solid transparent;
         border-right: 10px solid transparent;
         border-top: 19px solid #fff;
+      }
+
+      @media (orientation: portrait) {
+        #speech-bubble {
+          bottom: 120px; 
+        }
+      }
+
+      @media (min-width: 600px) and (max-width: 900px) and (orientation: portrait) {
+        #speech-bubble {
+          bottom: 160px; 
+        }
+      }
+
+      @media (min-width: 600px) and (max-width: 900px) and (orientation: landscape) {
+        #speech-bubble {
+          bottom: 200px; 
+        }
       }
     </style>
   </head>
@@ -109,6 +126,13 @@
           };
         }
       }
+
+      window.addEventListener('DOMContentLoaded', (event) => {
+        const vrButton = document.querySelector('.a-enter-vr-button');
+        if (vrButton) {
+          vrButton.style.display = 'none';
+        }
+      });
     </script>
   </body>
 </html>
