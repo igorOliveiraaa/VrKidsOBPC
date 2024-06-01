@@ -129,8 +129,12 @@
 
       window.addEventListener('DOMContentLoaded', (event) => {
         const vrButton = document.querySelector('.a-enter-vr-button');
+        const arButton = document.querySelector('.a-enter-ar.a-hidden');
         if (vrButton) {
           vrButton.style.display = 'none';
+        }
+        if (arButton) {
+          arButton.style.display = 'none';
         }
       });
     </script>
