@@ -129,12 +129,17 @@
 
       window.addEventListener('DOMContentLoaded', (event) => {
         const vrButton = document.querySelector('.a-enter-vr-button');
-        const arButton = document.querySelector('.a-enter-ar.a-hidden');
+        const arButtonHidden = document.querySelector('.a-enter-ar.a-hidden');
+        const arButton = document.querySelector('.a-enter-ar-button');
+        
         if (vrButton) {
-          vrButton.style.display = 'none';
+          vrButton.remove();
+        }
+        if (arButtonHidden) {
+          arButtonHidden.remove();
         }
         if (arButton) {
-          arButton.style.display = 'none';
+          arButton.remove();
         }
       });
     </script>
