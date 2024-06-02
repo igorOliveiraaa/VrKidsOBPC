@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>História da Bíblia - História 29</title>
     <script src="./lib/aframe.min.js"></script>
-    <style>
+        <style>
       @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
       
       body { 
@@ -62,25 +62,31 @@
         left: 50%;
         transform: translateX(-50%); 
         width: 0;
-        height: 0;
+        height: 0; 
         border-left: 10px solid transparent;
         border-right: 10px solid transparent;
         border-top: 19px solid #fff;
       }
-
+  
       @media (orientation: portrait) {
         #speech-bubble {
           bottom: 120px; 
         }
       }
-
+  
+      @media (max-width: 900px) and (orientation: landscape) {
+        #speech-bubble {
+          bottom: 180px; 
+        }
+      }
+  
       @media (min-width: 600px) and (max-width: 900px) and (orientation: portrait) {
         #speech-bubble {
           bottom: 160px; 
         }
       }
-
-      @media (min-width: 600px) and (max-width: 900px) and (orientation: landscape) {
+  
+      @media (min-width: 900px) and (orientation: portrait) {
         #speech-bubble {
           bottom: 200px; 
         }
