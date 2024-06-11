@@ -91,6 +91,43 @@
           bottom: 200px; 
         }
       }
+  
+      #fullscreen-button {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px 40px;
+        background-color: #000;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 10003;
+      }
+
+      #close-fullscreen-button {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        padding: 10px 20px;
+        background-color: #f00;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        z-index: 10004;
+        display: none;
+      }
+
+      @media (max-width: 600px) {
+        #close-fullscreen-button {
+          font-size: 14px;
+          padding: 8px 16px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -109,6 +146,9 @@
     />
     <div id="speech-bubble">Clique aqui para começar a história</div>
     <audio id="narration-audio" src="./audios/historia1.mp3" controls style="display: none"></audio>
+
+    <button id="fullscreen-button" onclick="enterFullscreen()">Entrar em tela cheia</button>
+    <button id="close-fullscreen-button" onclick="exitFullscreen()">Fechar</button>
 
     <script>
       let isNarrating = false;
@@ -131,6 +171,41 @@
             isNarrating = false;
           };
         }
+      }
+
+      function enterFullscreen() {
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { // Firefox
+          elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { // IE/Edge
+          elem.msRequestFullscreen();
+        }
+
+        const fullscreenButton = document.getElementById("fullscreen-button");
+        const closeFullscreenButton = document.getElementById("close-fullscreen-button");
+        fullscreenButton.style.display = "none";
+        closeFullscreenButton.style.display = "block";
+      }
+
+      function exitFullscreen() {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { // Firefox
+          document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { // IE/Edge
+          document.msExitFullscreen();
+        }
+
+        const fullscreenButton = document.getElementById("fullscreen-button");
+        const closeFullscreenButton = document.getElementById("close-fullscreen-button");
+        fullscreenButton.style.display = "block";
+        closeFullscreenButton.style.display = "none";
       }
 
       window.addEventListener('DOMContentLoaded', (event) => {
